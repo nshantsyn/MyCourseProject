@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h2>Целевая функция и ограничения</h2>
+
+<p>Целевая функция:</p>
+<p th:text="${function}">f(x) = 2000∙x1 + 3000∙x2 → max</p>
+
+<p>Ограничения:</p>
+<ul>
+    <li th:each="constraint : ${constraints}" th:text="${constraint}" ></li>
+
+</ul>
+<p th:text="${simplex}"></p>
+</body>
+</html>
