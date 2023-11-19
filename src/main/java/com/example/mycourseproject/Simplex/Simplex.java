@@ -138,8 +138,8 @@ public class Simplex {
 
             }
             System.out.println("F=" + F);
-            completeTaskSimplex.setX1(map.get("x1").intValue());
-            completeTaskSimplex.setX2(map.get("x2").intValue());
+            completeTaskSimplex.setX1(map.get("x1") != null ?map.get("x1").intValue():0);
+            completeTaskSimplex.setX2(map.get("x2") != null ?map.get("x2").intValue():0);
             completeTaskSimplex.setF(F.intValue());
         }
 

@@ -1,17 +1,115 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+            rel="stylesheet"
+    />
+</head>
 <body>
 
 <h2>Целевая функция и ограничения</h2>
 
 <p>Целевая функция:</p>
-<p th:text="${function}">f(x) = 2000∙x1 + 3000∙x2 → max</p>
+<p th:text="${function}"></p>
 
 <p>Ограничения:</p>
 <ul>
-    <li th:each="constraint : ${constraints}" th:text="${constraint}" ></li>
+    <li th:each="constraint : ${constraints}" th:text="${constraint}"></li>
 
 </ul>
 <p th:text="${simplex}"></p>
+<p th:text="${hook}"></p>
+<div id="plotly"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.0.0/math.js"
+        integrity="sha512-rffRpOvP8/vOkbpVUpjesEh2AI40+pNcMh0LAAdOKBE96pLnJh1IGKGhu/RL5lrmW8fA9p5ph5GkCOlMNXr3eg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var contour = {
+        z:  /*[[${z_contour}]]*/ 'default',
+        x:  /*[[${x_contour}]]*/ 'default',
+        y:  /*[[${y_contour}]]*/ 'default',
+        ncontours: 100,
+        showscale: false,
+        type: 'contour',
+        name: 'Целевая функция'
+    };
+    var startPoint = {
+
+        x: /*[[${x_start}]]*/ 'default',
+        y: /*[[${y_start}]]*/ 'default',
+        showscale: false,
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+            color: 'rgba(3,250,36,0.95)',
+            line: {
+                color: 'rgba(3,250,36,0.95)',
+                width: 3,
+            },
+            symbol: 'circle',
+            size: 5
+        },
+        name: 'Начальная точка'
+    };
+    var endPoint = {
+
+        x: /*[[${x_end}]]*/ 'default',
+        y: /*[[${y_end}]]*/ 'default',
+        showscale: false,
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+            color: 'rgb(0,253,200)',
+            line: {
+                color: 'rgb(0,253,200)',
+                width: 3,
+            },
+            symbol: 'circle',
+            size: 5
+        },
+        name: 'Конечная точка'
+    };
+
+
+    var constraintPoint = {
+
+        x: /*[[${x_constraint}]]*/ 'default',
+        y: /*[[${y_constraint}]]*/ 'default',
+        fill: 'toself',
+        fillcolor: 'rgba(250,242,99,0.5)', // полупрозрачный цвет
+        hoveron: 'points+fills',
+        line: { color: '#faf263' },
+        name: 'Область определений'
+
+    };
+    var path = {
+        x: /*[[${x_path}]]*/ 'default',
+        y: /*[[${y_path}]]*/ 'default',
+        mode: 'markers+lines',
+        name: 'steepest',
+        line: {color: 'black'},
+        type: 'scatter',
+        name: 'Путь'
+
+    };
+
+    var data = [constraintPoint,contour,path,startPoint,endPoint];
+
+
+    Plotly.newPlot('plotly', data);
+    /*]]>*/
+</script>
+
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+></script>
 </body>
 </html>

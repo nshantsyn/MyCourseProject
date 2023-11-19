@@ -46,8 +46,9 @@ public class MethodsController {
         ModelAndView completeTask = new ModelAndView("completeTask");
         completeTask.addObject("function", CompleteTaskCreator.getFunction(task));
         completeTask.addObject("constraints", CompleteTaskCreator.getConstraints(task));
-       // completeTask.addObject("",completeTaskJivs);
+
         completeTask.addObject("simplex",CompleteTaskCreator.getSimplexSolution(simplex));
+        completeTask = CompleteTaskCreator.getHookSolution(completeTask,completeTaskJivs);
         return completeTask;
     }
 }
