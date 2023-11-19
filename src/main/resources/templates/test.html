@@ -1,64 +1,26 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
+<h2>Целевая функция:</h2>
+<p>\(f(x) = 2000x_1 + 3000x_2 \rightarrow \max\)</p>
 
-
-<div id="myDiv"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.0.0/math.js" integrity="sha512-rffRpOvP8/vOkbpVUpjesEh2AI40+pNcMh0LAAdOKBE96pLnJh1IGKGhu/RL5lrmW8fA9p5ph5GkCOlMNXr3eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
-
-<script>
-  var data = [
-    {
-      x: [0,0.5,1,1.5,2],
-      y: [0,1,2,1,0],
-      fill: 'toself',
-      fillcolor: 'rgba(171, 99, 250, 0.5)', // полупрозрачный цвет
-      hoveron: 'points+fills',
-      line: { color: '#ab63fa' },
-      text: "Points + Fills",
-      hoverinfo: 'text',
-      hovertemplate: '<i>X</i>: %{x}<br><i>Y</i>: %{y}'
-    },
-    {
-      x: [3,3.5,4,4.5,5],
-      y: [0,1,2,1,0],
-      fill: 'toself',
-      fillcolor: 'rgba(231, 99, 250, 0.5)', // полупрозрачный цвет
-      hoveron: 'points',
-      line: { color: '#e763fa' },
-      text: "Points only",
-      hoverinfo: 'text',
-      hovertemplate: '<i>X</i>: %{x}<br><i>Y</i>: %{y}'
-    }
-  ]
-
-  var layout = {
-    title: 'Hover on <i>points</i> or <i>fill</i>',
-    xaxis: { range: [0,5] },
-    yaxis: { range: [0,3] },
-    hovermode: 'closest'
-  }
-
-  Plotly.newPlot('myDiv', data, layout);
-
-  var graphDiv = document.getElementById('myDiv');
-  graphDiv.on('plotly_selected', function(eventData) {
-    var x = eventData.points.map(function(p) {
-      return p.xaxis.d2l(p.x);
-    });
-    var y = eventData.points.map(function(p) {
-      return p.yaxis.d2l(p.y);
-    });
-    console.log(x, y);
-  });
-
-</script>
+<h2>Ограничения:</h2>
+<p>\[
+  \left\{
+  \begin{array}{l}
+  3x_1 + 3x_2 \leq 15, \\
+  2x_1 + 6x_2 \leq 18, \\
+  4x_1 \leq 16, \\
+  x_1 + 2x_2 \leq 8, \\
+  x_1, x_2 \geq 0
+  \end{array}
+  \right.
+  \]</p>
 
 </body>
 </html>

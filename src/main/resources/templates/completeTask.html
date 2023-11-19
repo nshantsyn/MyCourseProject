@@ -9,22 +9,94 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
             rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .card {
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <h2 class="text-center">Условие задачи</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Информация о производстве:</h5>
+                    <p class="card-text">Предприятие производит комплекты продукции видов A и B, используя при этом четыре группы оборудования.</p>
+                    <p class="card-text">Выпуск одного комплекта продукции A обеспечивает прибыль <input type="number"  style="width: 5%" th:field="*{priceA}"  required  min="0">  долл., продукции B – <input type="number"  style="width: 5%" th:field="*{priceB}" required min="0" > долл.</p>
+                    <p class="card-text">Трудоемкость изготовления одного комплекта продукции и фонд времени по каждой группе оборудования представлены в таблице:</p>
+                    <!-- Ваша таблица -->
+                </div>
+            </div>
+        </div>
+        <!-- Ваши остальные карточки -->
+    </div>
+</div>
+<div class="container text-center">
 
-<h2>Целевая функция и ограничения</h2>
 
-<p>Целевая функция:</p>
-<p th:text="${function}"></p>
+    <div class="container">
+        <h2>Решение</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Математическая модель:</h5>
+                        <p class="card-text" th:utext="${function}"></p>
+                        <p class="card-text" th:utext="${constraints}"></p>
+                        <p class="card-text">где x1 - количество деталей А, x2 - количество деталей Б</p>
+                    </div>
+                </div>
+            </div>
 
-<p>Ограничения:</p>
-<ul>
-    <li th:each="constraint : ${constraints}" th:text="${constraint}"></li>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ответ симплекс метода:</h5>
+                        <p class="card-text" th:text="${simplex}"></p>
 
-</ul>
-<p th:text="${simplex}"></p>
-<p th:text="${hook}"></p>
-<div id="plotly"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body position-relative">
+                        <h5 class="card-title">Ответ Хука-Дживса:</h5>
+                        <p class="card-text" th:text="${hook}"></p>
+                        <a href="#" data-mdb-toggle="modal" data-mdb-target="#exampleModal" class="position-absolute top-0 end-0 mt-2 me-2">
+                            <i class="fas fa-chart-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">График</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="plotly"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.0.0/math.js"
         integrity="sha512-rffRpOvP8/vOkbpVUpjesEh2AI40+pNcMh0LAAdOKBE96pLnJh1IGKGhu/RL5lrmW8fA9p5ph5GkCOlMNXr3eg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -86,7 +158,7 @@
         fillcolor: 'rgba(250,242,99,0.5)', // полупрозрачный цвет
         hoveron: 'points+fills',
         line: { color: '#faf263' },
-        name: 'Область определений'
+        name: 'Область ограничений'
 
     };
     var path = {
@@ -111,5 +183,7 @@
         type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
 ></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>
