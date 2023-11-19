@@ -68,4 +68,10 @@ public class CompleteTaskCreator {
         completeTask.addObject("y_constraint", task.getConstrainPoints().stream().map(p -> p.y).collect(Collectors.toList()));
         return completeTask;
     }
+    public static ModelAndView setTask(ModelAndView result, Task task){
+        result.addObject("modules",task.getListWrapper().getModules());
+        result.addObject("priceA",task.getPriceA());
+        result.addObject("priceB",task.getPriceB());
+        return result;
+    }
 }

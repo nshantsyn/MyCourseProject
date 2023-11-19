@@ -38,6 +38,13 @@ public class MethodsController {
         return new ModelAndView("redirect:/completeTask");
     }
 
+    @GetMapping("/recalculate")
+    public ModelAndView getNewResult( HttpSession session){
+        Task task = (Task) session.getAttribute("task");
+
+        return getTask(task,session);
+    }
+
     @GetMapping("/completeTask")
     public ModelAndView getCompleteTask(HttpSession session){
         Task task = (Task) session.getAttribute("task");
@@ -49,6 +56,7 @@ public class MethodsController {
 
         completeTask.addObject("simplex",CompleteTaskCreator.getSimplexSolution(simplex));
         completeTask = CompleteTaskCreator.getHookSolution(completeTask,completeTaskJivs);
+        completeTask = CompleteTaskCreator.setTask(completeTask,task);
         return completeTask;
     }
 }

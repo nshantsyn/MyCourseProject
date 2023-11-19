@@ -18,6 +18,27 @@
     </style>
 </head>
 <body>
+<div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-light p-4">
+        <a type="button" class="btn btn-primary me-2" th:href="@{/}">Начальная страница</a>
+        <a type="button" class="btn btn-primary" th:href="@{/recalculate}">Перерасчет</a>
+    </div>
+</div>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarToggleExternalContent"
+                aria-controls="navbarToggleExternalContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
 <div class="container">
     <h2 class="text-center">Условие задачи</h2>
     <div class="row">
@@ -26,13 +47,33 @@
                 <div class="card-body">
                     <h5 class="card-title">Информация о производстве:</h5>
                     <p class="card-text">Предприятие производит комплекты продукции видов A и B, используя при этом четыре группы оборудования.</p>
-                    <p class="card-text">Выпуск одного комплекта продукции A обеспечивает прибыль <input type="number"  style="width: 5%" th:field="*{priceA}"  required  min="0">  долл., продукции B – <input type="number"  style="width: 5%" th:field="*{priceB}" required min="0" > долл.</p>
+                    <p class="card-text" th:text="'Выпуск одного комплекта продукции A обеспечивает прибыль '+ ${priceA} + ' долл., продукции B ' + ${priceB} + ' –  долл.'">    </p>
                     <p class="card-text">Трудоемкость изготовления одного комплекта продукции и фонд времени по каждой группе оборудования представлены в таблице:</p>
-                    <!-- Ваша таблица -->
+                    <table class="table table-bordered border-primary ">
+                        <thead class="table-primary">
+                        <tr>
+                            <th class="text-center align-middle" rowspan="2">Группа Оборудования</th>
+                            <th class="text-center align-middle" colspan="2">Трудоемкость изготовления (дни)</th>
+                            <th class="text-center align-middle" rowspan="2">Фонд времени (дни)</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center align-middle">Комплект A</th>
+                            <th class="text-center align-middle">Комплект B</th>
+                        </tr>
+                        </thead>
+                        <tr th:each="module: ${modules}">
+                            <td class="text-center align-middle" th:text="'Модуль '+ ${module.moduleNumber}"></td>
+                            <td class="text-center align-middle" th:text="${module.kitA}"></td>
+                            <td class="text-center align-middle" th:text="${module.kitB}"></td>
+                            <td class="text-center align-middle" th:text="${module.timeFund}"></td>
+                        </tr>
+                    </table>
+                    <p class="card-text">Определить план производства партии комплектов, который обеспечивает максимальную прибыль предприятия.</p>
+
                 </div>
             </div>
         </div>
-        <!-- Ваши остальные карточки -->
+
     </div>
 </div>
 <div class="container text-center">
