@@ -34,6 +34,7 @@ public class Jivs {
     }
 
     public static void createGraphic() {
+        System.out.println("Создание графика Хука-Дживса");
         completeTask.listForXGraphic = new ArrayList<>();
         completeTask.listForYGraphic = new ArrayList<>();
         completeTask.listForZGraphic = new ArrayList<>();
@@ -76,6 +77,7 @@ public class Jivs {
             CompleteTask completeTask1 = new CompleteTask();
             completeTask1.path = new ArrayList<>();
             point1 = new Point();
+            System.out.println("Выбор случайной начальной точки");
             D_X = 1;
             D_Y = 1;
             Random random = new Random();
@@ -85,8 +87,8 @@ public class Jivs {
                 point1.x = random.nextDouble() * 4; // x1 в диапазоне [0, 4]
                 point1.y = random.nextDouble() * 4; // x2 в диапазоне [0, 8]
             } while (!constraintsSatisfied(point1));
-            // point1.x = 2.7; // x1 в диапазоне [0, 4]
-            //  point1.y = 0.09;
+
+            System.out.println("Точка выбрана. Начало решения");
             completeTask1.startPoint = point1;
 
             completeTask1.path.add(new Point(point1.x, point1.y, f(point1)));
@@ -125,12 +127,13 @@ public class Jivs {
 
         completeTask = tasks.stream().max(Comparator.comparingDouble(x -> f(x.endPoint))).get();
         createGraphic();
-
+        System.out.println("Экстремум найден : " + completeTask.endPoint +"\n Значение функции в точке: " + f(completeTask.endPoint));
 
         return completeTask;
     }
 
     public static Point searchByPattern(Point point3) {
+        System.out.println("Запуск поиска по образцу ");
         List<Point> points = new ArrayList<>();
         points.add(new Point(point3.x + D_X, point3.y, D_X, D_Y));
         points.add(new Point(point3.x - D_X, point3.y, -D_X, D_Y));
@@ -143,6 +146,7 @@ public class Jivs {
 
         Point point4 = points.stream().filter(p -> constraintsSatisfied(p)).max(Comparator.comparingDouble(Jivs::f)).orElse(point3);
         if (f(point4) >= f(point3)) {
+            System.out.println("Поиск по образцу: переход в точку -> " + point4 +"\n Значение функции в точке: " + f(point4));
             point3 = point4;
             D_X = point4.dx;
             D_Y = point4.dy;
@@ -159,15 +163,17 @@ public class Jivs {
         points.add(new Point(point3.x - D_X, point3.y + D_Y, -D_X, D_Y));
         point4 = points.stream().filter(p -> constraintsSatisfied(p)).max(Comparator.comparingDouble(Jivs::f)).orElse(point3);
         if (f(point4) >= f(point3)) {
+            System.out.println("Поиск по образцу: переход в точку -> " + point4 +"\n Значение функции в точке: " + f(point4));
             point3 = point4;
             D_X = point4.dx;
             D_Y = point4.dy;
         }
-
+        System.out.println("Была получена точка: "+ point4);
         return point3;
     }
 
     public static Point explorerSearch(Point point1) {
+        System.out.println("Запуск исследующего поиска");
         List<Point> points = new ArrayList<>();
         points.add(new Point(point1.x + D_X, point1.y, D_X, D_Y));
         points.add(new Point(point1.x - D_X, point1.y, -D_X, D_Y));
@@ -181,23 +187,26 @@ public class Jivs {
         if (f(point2) <= f(point1)) {
             D_X /= 2;
             D_Y /= 2;
+            System.out.println("Исследующий поиск: точка не найдена, уменьшение шага");
         } else {
             points.stream().forEach(p -> {
                 x_test.add(p.x);
                 y_test.add(p.y);
             });
-
+            System.out.println("Исследующий поиск: переход в точку -> "+ point2  +"\n Значение функции в точке: " + f(point2));
             point1 = point2;
             D_X = point2.dx;
             D_Y = point2.dy;
             Point point3 = new Point(point1.x + D_X, point1.y + D_Y, D_X, D_Y);
             while (f(point3) > f(point1) && constraintsSatisfied(point3)) {
+                System.out.println("Исследующий поиск: переход в точку -> "+ point3  +"\n Значение функции в точке: " + f(point3));
                 point1 = point3;
                 point3 = new Point(point1.x + D_X, point1.y + D_Y, D_X, D_Y);
             }
         }
 
         point1.f = f(point1);
+        System.out.println("Была получена точка: "+ point1);
         return point1;
     }
 }

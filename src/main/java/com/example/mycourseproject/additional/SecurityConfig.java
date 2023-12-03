@@ -12,6 +12,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("Создание защищенного соединения");
         return http
                 .requiresChannel(channel ->
                         channel.anyRequest().requiresSecure())

@@ -17,11 +17,10 @@ public class Point {
 
     @Override
     public String toString() {
-        return "Point{" +
+        return "Сведения о точкек {" +
                 "x=" + x +
                 ", y=" + y +
-                ", dx=" + dx +
-                ", dy=" + dy +
+
                 '}';
     }
 

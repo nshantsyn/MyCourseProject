@@ -31,10 +31,12 @@ public class CompleteTaskCreator {
     }
 
     public static String getFunction(Task task) {
+        System.out.println("Отображение математической модели");
         return MessageFormat.format("<p> \\(f(x) = {0}∙x1 + {1}∙x2  \\rightarrow \\max\\)</p>", task.getPriceA(), task.getPriceB());
     }
 
     public static String getSimplexSolution(CompleteTaskSimplex simplex) {
+        System.out.println("Подготовка результатов симплекс метода");
         return MessageFormat.format("""
                 С учетом ограничений и целевой функции, 
                 предприятию необходимо произвести {0} деталей типа A и 
@@ -43,6 +45,7 @@ public class CompleteTaskCreator {
     }
 
     public static ModelAndView getHookSolution(ModelAndView completeTask, CompleteTask task) {
+        System.out.println("Подготовка результатов Хука-Дживса");
         completeTask.addObject("hook", MessageFormat.format("""
                 С учетом ограничений и целевой функции, 
                 предприятию необходимо произвести {0} деталей типа A и 
@@ -69,6 +72,7 @@ public class CompleteTaskCreator {
         return completeTask;
     }
     public static ModelAndView setTask(ModelAndView result, Task task){
+        System.out.println("Отображние условий задачи");
         result.addObject("modules",task.getListWrapper().getModules());
         result.addObject("priceA",task.getPriceA());
         result.addObject("priceB",task.getPriceB());

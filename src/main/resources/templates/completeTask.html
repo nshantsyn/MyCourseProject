@@ -179,9 +179,9 @@
         type: 'scatter',
         mode: 'markers',
         marker: {
-            color: 'rgb(0,253,200)',
+            color: 'rgb(209,12,227)',
             line: {
-                color: 'rgb(0,253,200)',
+                color: 'rgb(209,12,227)',
                 width: 3,
             },
             symbol: 'circle',
@@ -212,11 +212,46 @@
         name: 'Путь'
 
     };
-
+    var layout = {
+        xaxis: {
+            title: 'Комплект А, шт.',
+            titlefont: {
+                family: 'Arial, sans-serif',
+                size: 18,
+                color: 'lightgrey'
+            },
+            showticklabels: true,
+            tickangle: 'auto',
+            tickfont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'black'
+            },
+            exponentformat: 'e',
+            showexponent: 'all'
+        },
+        yaxis: {
+            title: 'Комплект B, шт.',
+            titlefont: {
+                family: 'Arial, sans-serif',
+                size: 18,
+                color: 'lightgrey'
+            },
+            showticklabels: true,
+            tickangle: 45,
+            tickfont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'black'
+            },
+            exponentformat: 'e',
+            showexponent: 'all'
+        }
+    };
     var data = [constraintPoint,contour,path,startPoint,endPoint];
 
 
-    Plotly.newPlot('plotly', data);
+    Plotly.newPlot('plotly', data,layout);
     /*]]>*/
 </script>
 
