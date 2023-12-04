@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .card {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-light p-4">
+        <a type="button" class="btn btn-primary me-2" th:href="@{/}">Начальная страница</a>
+        <a type="button" class="btn btn-primary" th:href="@{/recalculate}">Перерасчет</a>
+    </div>
+</div>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarToggleExternalContent"
+                aria-controls="navbarToggleExternalContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+<div class="container">
+    <h2 class="text-center">Условие задачи</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Информация о производстве:</h5>
+                    <p class="card-text">Предприятие производит комплекты продукции видов A и B, используя при этом четыре группы оборудования.</p>
+                    <p class="card-text" th:text="'Выпуск одного комплекта продукции A обеспечивает прибыль '+ ${priceA} + ' долл., продукции B ' + ${priceB} + ' –  долл.'">    </p>
+                    <p class="card-text">Трудоемкость изготовления одного комплекта продукции и фонд времени по каждой группе оборудования представлены в таблице:</p>
+                    <table class="table table-bordered border-primary ">
+                        <thead class="table-primary">
+                        <tr>
+                            <th class="text-center align-middle" rowspan="2">Группа Оборудования</th>
+                            <th class="text-center align-middle" colspan="2">Трудоемкость изготовления (дни)</th>
+                            <th class="text-center align-middle" rowspan="2">Фонд времени (дни)</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center align-middle">Комплект A</th>
+                            <th class="text-center align-middle">Комплект B</th>
+                        </tr>
+                        </thead>
+                        <tr th:each="module: ${modules}">
+                            <td class="text-center align-middle" th:text="'Модуль '+ ${module.moduleNumber}"></td>
+                            <td class="text-center align-middle" th:text="${module.kitA}"></td>
+                            <td class="text-center align-middle" th:text="${module.kitB}"></td>
+                            <td class="text-center align-middle" th:text="${module.timeFund}"></td>
+                        </tr>
+                    </table>
+                    <p class="card-text">Определить план производства партии комплектов, который обеспечивает максимальную прибыль предприятия.</p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="container text-center">
+
+
+    <div class="container">
+        <h2>Решение</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Математическая модель:</h5>
+                        <p class="card-text" th:utext="${function}"></p>
+                        <p class="card-text" th:utext="${constraints}"></p>
+                        <p class="card-text">где x1 - количество деталей А, x2 - количество деталей Б</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ответ симплекс метода:</h5>
+                        <p class="card-text" th:text="${simplex}"></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body position-relative">
+                        <h5 class="card-title">Ответ Хука-Дживса:</h5>
+                        <p class="card-text" th:text="${hook}"></p>
+                        <a href="#" data-mdb-toggle="modal" data-mdb-target="#exampleModal" class="position-absolute top-0 end-0 mt-2 me-2">
+                            <i class="fas fa-chart-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">График</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="plotly"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.0.0/math.js"
+        integrity="sha512-rffRpOvP8/vOkbpVUpjesEh2AI40+pNcMh0LAAdOKBE96pLnJh1IGKGhu/RL5lrmW8fA9p5ph5GkCOlMNXr3eg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var contour = {
+        z:  /*[[${z_contour}]]*/ 'default',
+        x:  /*[[${x_contour}]]*/ 'default',
+        y:  /*[[${y_contour}]]*/ 'default',
+        ncontours: 100,
+        showscale: false,
+        type: 'contour',
+        name: 'Целевая функция'
+    };
+    var startPoint = {
+
+        x: /*[[${x_start}]]*/ 'default',
+        y: /*[[${y_start}]]*/ 'default',
+        showscale: false,
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+            color: 'rgba(3,250,36,0.95)',
+            line: {
+                color: 'rgba(3,250,36,0.95)',
+                width: 3,
+            },
+            symbol: 'circle',
+            size: 5
+        },
+        name: 'Начальная точка'
+    };
+    var endPoint = {
+
+        x: /*[[${x_end}]]*/ 'default',
+        y: /*[[${y_end}]]*/ 'default',
+        showscale: false,
+        type: 'scatter',
+        mode: 'markers',
+        marker: {
+            color: 'rgb(209,12,227)',
+            line: {
+                color: 'rgb(209,12,227)',
+                width: 3,
+            },
+            symbol: 'circle',
+            size: 5
+        },
+        name: 'Конечная точка'
+    };
+
+
+    var constraintPoint = {
+
+        x: /*[[${x_constraint}]]*/ 'default',
+        y: /*[[${y_constraint}]]*/ 'default',
+        fill: 'toself',
+        fillcolor: 'rgba(250,242,99,0.5)', // полупрозрачный цвет
+        hoveron: 'points+fills',
+        line: { color: '#faf263' },
+        name: 'Область ограничений'
+
+    };
+    var path = {
+        x: /*[[${x_path}]]*/ 'default',
+        y: /*[[${y_path}]]*/ 'default',
+        mode: 'markers+lines',
+        name: 'steepest',
+        line: {color: 'black'},
+        type: 'scatter',
+        name: 'Путь'
+
+    };
+    var layout = {
+        xaxis: {
+            title: 'Комплект А, шт.',
+            titlefont: {
+                family: 'Arial, sans-serif',
+                size: 18,
+                color: 'lightgrey'
+            },
+            showticklabels: true,
+            tickangle: 'auto',
+            tickfont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'black'
+            },
+            exponentformat: 'e',
+            showexponent: 'all'
+        },
+        yaxis: {
+            title: 'Комплект B, шт.',
+            titlefont: {
+                family: 'Arial, sans-serif',
+                size: 18,
+                color: 'lightgrey'
+            },
+            showticklabels: true,
+            tickangle: 45,
+            tickfont: {
+                family: 'Old Standard TT, serif',
+                size: 14,
+                color: 'black'
+            },
+            exponentformat: 'e',
+            showexponent: 'all'
+        }
+    };
+    var data = [constraintPoint,contour,path,startPoint,endPoint];
+
+
+    Plotly.newPlot('plotly', data,layout);
+    /*]]>*/
+</script>
+
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

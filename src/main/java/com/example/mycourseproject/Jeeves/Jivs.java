@@ -5,7 +5,6 @@ import com.example.mycourseproject.additional.Module;
 import com.example.mycourseproject.additional.Task;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Jivs {
     private static final double EPSILON = 0.0000001;
@@ -15,8 +14,8 @@ public class Jivs {
     private static List<Double> x_test = new ArrayList<>();
     private static List<Double> y_test = new ArrayList<>();
     private static List<Point> result = new ArrayList<>();
-    private static List<CompleteTask> tasks;
-    private static CompleteTask completeTask;
+    private static List<CompleteTaskJeeves> tasks;
+    private static CompleteTaskJeeves completeTaskJeeves;
 
     private static Task task;
 
@@ -35,13 +34,13 @@ public class Jivs {
 
     public static void createGraphic() {
         System.out.println("Создание графика Хука-Дживса");
-        completeTask.listForXGraphic = new ArrayList<>();
-        completeTask.listForYGraphic = new ArrayList<>();
-        completeTask.listForZGraphic = new ArrayList<>();
+        completeTaskJeeves.listForXGraphic = new ArrayList<>();
+        completeTaskJeeves.listForYGraphic = new ArrayList<>();
+        completeTaskJeeves.listForZGraphic = new ArrayList<>();
         List<List<Point>> constrainPoints = new ArrayList<>();
         for (double i = 0; i < 5; i++) {
-            completeTask.listForXGraphic.add(i);
-            completeTask.listForYGraphic.add(i);
+            completeTaskJeeves.listForXGraphic.add(i);
+            completeTaskJeeves.listForYGraphic.add(i);
         }
 
         for (double i = 0; i < 5; i++) {
@@ -56,7 +55,7 @@ public class Jivs {
                 constrainPoints.add(points);
 
 
-            completeTask.listForZGraphic.add(tmp);
+            completeTaskJeeves.listForZGraphic.add(tmp);
 
         }
        List<Point> path = new ArrayList<>();
@@ -67,15 +66,15 @@ public class Jivs {
         Collections.reverse(constrainPoints.get(constrainPoints.size()-1));
         Collections.reverse(constrainPoints);
         constrainPoints.stream().forEach(p -> path.add(p.get(0)));
-       completeTask.constrainPoints = path;
+       completeTaskJeeves.constrainPoints = path;
     }
 
-    public static CompleteTask getResult(Task task) {
+    public static CompleteTaskJeeves getResult(Task task) {
         tasks = new ArrayList<>();
         Jivs.task = task;
         for (int i = 0; i < 1000; i++) {
-            CompleteTask completeTask1 = new CompleteTask();
-            completeTask1.path = new ArrayList<>();
+            CompleteTaskJeeves completeTaskJeeves1 = new CompleteTaskJeeves();
+            completeTaskJeeves1.path = new ArrayList<>();
             point1 = new Point();
             System.out.println("Выбор случайной начальной точки");
             D_X = 1;
@@ -83,26 +82,31 @@ public class Jivs {
             Random random = new Random();
             point1.dx = D_X;
             point1.dy = D_Y;
+            int count = 0;
             do {
                 point1.x = random.nextDouble() * 4; // x1 в диапазоне [0, 4]
-                point1.y = random.nextDouble() * 4; // x2 в диапазоне [0, 8]
-            } while (!constraintsSatisfied(point1));
-
+                point1.y = random.nextDouble() * 4; // x2 в диапазоне [0, 4]
+                count++;
+            } while (!constraintsSatisfied(point1) && count <1000);
+            if(count >=1000){
+                point1.x = 0;
+                point1.y = 0;
+            }
             System.out.println("Точка выбрана. Начало решения");
-            completeTask1.startPoint = point1;
+            completeTaskJeeves1.startPoint = point1;
 
-            completeTask1.path.add(new Point(point1.x, point1.y, f(point1)));
+            completeTaskJeeves1.path.add(new Point(point1.x, point1.y, f(point1)));
             while (Math.abs(D_X) > EPSILON || Math.abs(D_Y) > EPSILON) {
 
                 Point point2 = explorerSearch(point1);
                 Point point3 = new Point();
                 point2.f = f(point2);
-                completeTask1.path.add(point2);
+                completeTaskJeeves1.path.add(point2);
                 point3.x = point1.x + 2 * (point2.x - point1.x);
                 point3.y = point1.y + 2 * (point2.y - point1.y);
                 point3.f = f(point3);
                 if (constraintsSatisfied(point3))
-                    completeTask1.path.add(point3);
+                    completeTaskJeeves1.path.add(point3);
                 if (f(point2) > f(point1)) {
                     while (searchByPattern(point3).x != point3.x || searchByPattern(point3).y != point3.y) {
                         Point point4 = searchByPattern(point3);
@@ -113,7 +117,7 @@ public class Jivs {
                         point3.y = point1.y + 2 * (point2.y - point1.y);
                         point3.f = f(point3);
                         if (constraintsSatisfied(point3))
-                            completeTask1.path.add(point3);
+                            completeTaskJeeves1.path.add(point3);
                     }
                     point1 = point2;
                 }
@@ -121,15 +125,15 @@ public class Jivs {
 
             }
 
-            completeTask1.endPoint = point1;
-            tasks.add(completeTask1);
+            completeTaskJeeves1.endPoint = point1;
+            tasks.add(completeTaskJeeves1);
         }
 
-        completeTask = tasks.stream().max(Comparator.comparingDouble(x -> f(x.endPoint))).get();
+        completeTaskJeeves = tasks.stream().max(Comparator.comparingDouble(x -> f(x.endPoint))).get();
         createGraphic();
-        System.out.println("Экстремум найден : " + completeTask.endPoint +"\n Значение функции в точке: " + f(completeTask.endPoint));
+        System.out.println("Экстремум найден : " + completeTaskJeeves.endPoint +"\n Значение функции в точке: " + f(completeTaskJeeves.endPoint));
 
-        return completeTask;
+        return completeTaskJeeves;
     }
 
     public static Point searchByPattern(Point point3) {

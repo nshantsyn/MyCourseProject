@@ -3,7 +3,6 @@ package com.example.mycourseproject.Simplex;
 
 import com.example.mycourseproject.Jeeves.CompleteTaskSimplex;
 import com.example.mycourseproject.additional.Task;
-import lombok.Data;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -15,12 +14,14 @@ public class Simplex {
         this.arrayB = arrayB;
         C = c;
     }
+
     String pattern = "###.##";
     DecimalFormat decimalFormat = new DecimalFormat(pattern);
-    double arrayX[][] ;
-    double arrayB[] ;
-    int count =0;
-    double C[] ;
+    double arrayX[][];
+    double arrayB[];
+
+    int count = 0;
+    double C[];
     List<Double> del = new ArrayList<>();
     List<Integer> formulaC = new ArrayList<>();
     static CompleteTaskSimplex completeTaskSimplex;
@@ -35,38 +36,39 @@ public class Simplex {
         }
     }
 
-    public void PrintFormula() {
-        for (int i = 0; i < formulaC.size(); i++) {
-            System.out.println(C[formulaC.get(i)]);
-        }
-    }
-    public Object[] getStringArrayC(){
+
+
+
+    public Object[] getStringArrayC() {
         List<String> row = new ArrayList<>();
         row.add("C");
         Arrays.stream(C).forEach(c -> row.add(String.valueOf(c)));
         return row.toArray();
     }
-    public Object[] getBasisArray(){
+
+    public Object[] getBasisArray() {
         List<String> row = new ArrayList<>();
         row.clear();
         row.add("Базис");
         for (int i = 0; i < C.length; i++) {
-            row.add("x"+(i+1));
+            row.add("x" + (i + 1));
         }
         row.add("b");
-        return  row.toArray();
+        return row.toArray();
     }
-    public Object[] getDelArray(){
+
+    public Object[] getDelArray() {
         List<String> row = new ArrayList<>();
         row.add("Δ");
         for (int i = 0; i < del.size(); i++) {
             row.add(String.valueOf(del.get(i)));
         }
 
-        return  row.toArray();
+        return row.toArray();
     }
-    public void printTable(){
-        System.out.println("Итерация "+ count);
+
+    public void printTable() {
+        System.out.println("Итерация " + count);
         System.out.println("--------------------------");
         Object[][] table = new Object[arrayX.length + 3][];
 
@@ -81,9 +83,9 @@ public class Simplex {
                 row.add(String.valueOf(decimalFormat.format(arrayX[i][j])));
             }
             row.add(String.valueOf(arrayB[i]));
-            table[2+i] =  row.toArray();
+            table[2 + i] = row.toArray();
         }
-        table[table.length-1] = getDelArray();
+        table[table.length - 1] = getDelArray();
         for (Object[] r : table) {
             for (Object cell : r) {
                 System.out.printf("%-8s", cell);
@@ -92,6 +94,7 @@ public class Simplex {
         }
         System.out.println("--------------------------");
     }
+
     public void foundDel() {
         del.clear();
         for (int i = 0; i < arrayX[0].length; i++) {
@@ -151,15 +154,16 @@ public class Simplex {
 
 
 
-    public void Cycle() {
+    public void Calculate() {
         this.foundDel();
         printTable();
         if (del.stream().min(Double::compare).get() < 0) {
 
             System.out.println("План не оптимален. Перерасчет");
+
             this.RebuildMatrix();
             count++;
-            this.Cycle();
+            this.Calculate();
         } else {
             Map<String, Double> map = new HashMap<>();
             for (int i = 0; i < formulaC.size(); i++) {
@@ -182,36 +186,37 @@ public class Simplex {
 
             }
             System.out.println("F=" + F);
-            completeTaskSimplex.setX1(map.get("x1") != null ?map.get("x1").intValue():0);
-            completeTaskSimplex.setX2(map.get("x2") != null ?map.get("x2").intValue():0);
+            completeTaskSimplex.setX1(map.get("x1") != null ? map.get("x1").intValue() : 0);
+            completeTaskSimplex.setX2(map.get("x2") != null ? map.get("x2").intValue() : 0);
             completeTaskSimplex.setF(F.intValue());
         }
 
     }
-    public static CompleteTaskSimplex getCompleteTask(Task task){
-        double [][]arrX = new double[task.getListWrapper().getModules().size()][task.getListWrapper().getModules().size()+2];
+
+    public static CompleteTaskSimplex getCompleteTask(Task task) {
+        double[][] arrX = new double[task.getListWrapper().getModules().size()][task.getListWrapper().getModules().size() + 2];
         int count = 2;
         for (int i = 0; i < task.getListWrapper().getModules().size(); i++) {
             arrX[i][0] = task.getListWrapper().getModules().get(i).getKitA();
             arrX[i][1] = task.getListWrapper().getModules().get(i).getKitB();
-            for (int j = 2; j < task.getListWrapper().getModules().size()+2; j++) {
+            for (int j = 2; j < task.getListWrapper().getModules().size() + 2; j++) {
                 arrX[i][j] = 0;
 
             }
-            arrX[i][count] =1;
+            arrX[i][count] = 1;
             count++;
         }
-        double []arrayB = task.getListWrapper().getModules().stream().mapToDouble(x -> x.getTimeFund()).toArray();
-        double []C = new double[task.getListWrapper().getModules().size()+2];
+        double[] arrayB = task.getListWrapper().getModules().stream().mapToDouble(x -> x.getTimeFund()).toArray();
+        double[] C = new double[task.getListWrapper().getModules().size() + 2];
         for (int i = 0; i < C.length; i++) {
             C[i] = 0;
         }
         C[0] = task.getPriceA();
         C[1] = task.getPriceB();
         completeTaskSimplex = new CompleteTaskSimplex();
-        Simplex simplex = new Simplex(arrX,arrayB,C);
+        Simplex simplex = new Simplex(arrX, arrayB, C);
         simplex.createFormula();
-        simplex.Cycle();
+        simplex.Calculate();
         return completeTaskSimplex;
     }
 

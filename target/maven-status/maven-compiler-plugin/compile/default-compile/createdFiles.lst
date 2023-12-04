@@ -1,0 +1,12 @@
+com\example\mycourseproject\additional\CompleteTaskCreator.class
+com\example\mycourseproject\additional\SecurityConfig.class
+com\example\mycourseproject\Simplex\Simplex.class
+com\example\mycourseproject\additional\Task.class
+com\example\mycourseproject\Jeeves\CompleteTaskSimplex.class
+com\example\mycourseproject\MethodsController.class
+com\example\mycourseproject\additional\Module.class
+com\example\mycourseproject\MyCourseProjectApplication.class
+com\example\mycourseproject\additional\ModuleListWrapper.class
+com\example\mycourseproject\Jeeves\CompleteTaskJeeves.class
+com\example\mycourseproject\Jeeves\Point.class
+com\example\mycourseproject\Jeeves\Jivs.class

@@ -1,6 +1,6 @@
 package com.example.mycourseproject;
 
-import com.example.mycourseproject.Jeeves.CompleteTask;
+import com.example.mycourseproject.Jeeves.CompleteTaskJeeves;
 import com.example.mycourseproject.Jeeves.CompleteTaskSimplex;
 import com.example.mycourseproject.Jeeves.Jivs;
 import com.example.mycourseproject.Simplex.Simplex;
@@ -35,12 +35,12 @@ public class MethodsController {
     public ModelAndView getTask(@ModelAttribute Task task, HttpSession session){
         System.out.println("Произведение расчетов...");
         System.out.println("Запуск метода Хука-Дживса...");
-        CompleteTask completeTaskJivs =  Jivs.getResult(task);
+        CompleteTaskJeeves completeTaskJeevesJivs =  Jivs.getResult(task);
         System.out.println("Запуск Симплекс-метода...");
         CompleteTaskSimplex completeTaskSimplex = Simplex.getCompleteTask(task);
         System.out.println("Сохранение результатов...");
         session.setAttribute("task",task);
-        session.setAttribute("jivs",completeTaskJivs);
+        session.setAttribute("jivs", completeTaskJeevesJivs);
         session.setAttribute("simplex",completeTaskSimplex);
         System.out.println("Результаты сохранены. Переход к отображению результатов");
         return new ModelAndView("redirect:/completeTask");
@@ -62,13 +62,13 @@ public class MethodsController {
         System.out.println("Выгрузка ответа симплекс-метода");
         CompleteTaskSimplex simplex = (CompleteTaskSimplex) session.getAttribute("simplex");
         System.out.println("Выгрузка ответа Хука-Дживса");
-        CompleteTask completeTaskJivs = (CompleteTask) session.getAttribute("jivs");
+        CompleteTaskJeeves completeTaskJeevesJivs = (CompleteTaskJeeves) session.getAttribute("jivs");
         ModelAndView completeTask = new ModelAndView("completeTask");
         completeTask.addObject("function", CompleteTaskCreator.getFunction(task));
         completeTask.addObject("constraints", CompleteTaskCreator.getConstraints(task));
 
         completeTask.addObject("simplex",CompleteTaskCreator.getSimplexSolution(simplex));
-        completeTask = CompleteTaskCreator.getHookSolution(completeTask,completeTaskJivs);
+        completeTask = CompleteTaskCreator.getHookSolution(completeTask, completeTaskJeevesJivs);
         completeTask = CompleteTaskCreator.setTask(completeTask,task);
         System.out.println("Отображение результатов");
         return completeTask;

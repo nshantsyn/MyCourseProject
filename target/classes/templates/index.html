@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh; transform: translateY(-10%);">
+    <div class="container">
+        <form action="#" th:action="@{/send}" th:object="${task}" method="post" >
+
+            <p>Предприятие производит комплекты продукции видов A и B, используя при этом четыре группы
+                оборудования.</p>
+            <p> Выпуск одного комплекта продукции A обеспечивает прибыль
+                <input type="number"  style="width: 5%" th:field="*{priceA}"  required  min="0">  долл., продукции B –
+                <input type="number"  style="width: 5%" th:field="*{priceB}" required min="0" > долл. </p>
+            <p>
+                Трудоемкость изготовления одного комплекта
+                продукции и фонд времени по каждой группе оборудования представлены в таблице:</p>
+
+            <table class="table table-bordered border-primary ">
+                <thead class="table-primary">
+                <tr>
+                    <th class="text-center align-middle" rowspan="2">Группа Оборудования</th>
+                    <th class="text-center align-middle" colspan="2">Трудоемкость изготовления (дни)</th>
+                    <th class="text-center align-middle" rowspan="2">Фонд времени (дни)</th>
+                </tr>
+                <tr>
+                    <th class="text-center align-middle">Комплект A</th>
+                    <th class="text-center align-middle">Комплект B</th>
+                </tr>
+                </thead>
+                <tr th:each="module, iterStat : *{listWrapper.modules}">
+                    <td class="text-center align-middle" th:text="'Модуль '+ ${iterStat.index + 1}"></td>
+                    <td class="text-center align-middle"><input type="number" min="0" required
+                                                                th:field="*{listWrapper.modules[__${iterStat.index}__].kitA}">
+                    </td>
+                    <td class="text-center align-middle"><input type="number" min="0"required
+                                                                th:field="*{listWrapper.modules[__${iterStat.index}__].kitB}">
+                    </td>
+                    <td class="text-center align-middle"><input type="number" min="0"required
+                                                                th:field="*{listWrapper.modules[__${iterStat.index}__].timeFund}">
+                    </td>
+                </tr>
+            </table>
+            <p class="card-text">Определить план производства партии комплектов, который обеспечивает максимальную прибыль предприятия.</p>
+            <br>
+            <div class="text-center ">
+                <button type="submit" class="btn btn-primary">Получить результат</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- MDB -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+></script>
+
+</body>
+</html>

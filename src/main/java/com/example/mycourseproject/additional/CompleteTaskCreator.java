@@ -1,6 +1,6 @@
 package com.example.mycourseproject.additional;
 
-import com.example.mycourseproject.Jeeves.CompleteTask;
+import com.example.mycourseproject.Jeeves.CompleteTaskJeeves;
 import com.example.mycourseproject.Jeeves.CompleteTaskSimplex;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,7 +44,7 @@ public class CompleteTaskCreator {
                 """, simplex.getX1(), simplex.getX2(), simplex.getF());
     }
 
-    public static ModelAndView getHookSolution(ModelAndView completeTask, CompleteTask task) {
+    public static ModelAndView getHookSolution(ModelAndView completeTask, CompleteTaskJeeves task) {
         System.out.println("Подготовка результатов Хука-Дживса");
         completeTask.addObject("hook", MessageFormat.format("""
                 С учетом ограничений и целевой функции, 
