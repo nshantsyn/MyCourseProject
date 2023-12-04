@@ -145,30 +145,13 @@ public class Jivs {
         points.add(new Point(point3.x - D_X, point3.y + D_Y, -D_X, D_Y));
 
         Point point4 = points.stream().filter(p -> constraintsSatisfied(p)).max(Comparator.comparingDouble(Jivs::f)).orElse(point3);
-        if (f(point4) >= f(point3)) {
+        if (f(point4) > f(point3)) {
             System.out.println("Поиск по образцу: переход в точку -> " + point4 +"\n Значение функции в точке: " + f(point4));
             point3 = point4;
             D_X = point4.dx;
             D_Y = point4.dy;
         }
 
-        points.clear();
-        points.add(new Point(point3.x + D_X, point3.y, D_X, D_Y));
-        points.add(new Point(point3.x - D_X, point3.y, -D_X, D_Y));
-        points.add(new Point(point3.x, point3.y - D_Y, D_X, -D_Y));
-        points.add(new Point(point3.x, point3.y + D_Y, D_X, D_Y));
-        points.add(new Point(point3.x + D_X, point3.y + D_Y, D_X, D_Y));
-        points.add(new Point(point3.x + D_X, point3.y - D_Y, D_X, -D_Y));
-        points.add(new Point(point3.x - D_X, point3.y - D_Y, -D_X, -D_Y));
-        points.add(new Point(point3.x - D_X, point3.y + D_Y, -D_X, D_Y));
-        point4 = points.stream().filter(p -> constraintsSatisfied(p)).max(Comparator.comparingDouble(Jivs::f)).orElse(point3);
-        if (f(point4) >= f(point3)) {
-            System.out.println("Поиск по образцу: переход в точку -> " + point4 +"\n Значение функции в точке: " + f(point4));
-            point3 = point4;
-            D_X = point4.dx;
-            D_Y = point4.dy;
-        }
-        System.out.println("Была получена точка: "+ point4);
         return point3;
     }
 

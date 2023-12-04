@@ -50,7 +50,7 @@ public class CompleteTaskCreator {
                 С учетом ограничений и целевой функции, 
                 предприятию необходимо произвести {0} деталей типа A и 
                 {1} деталей типа B, чтобы получить максимальную прибыль в размере {2} долларов
-                """, task.getEndPoint().x, task.getEndPoint().y, task.getEndPoint().f));
+                """, Math.round(task.getEndPoint().x), Math.round(task.getEndPoint().y), task.getEndPoint().f));
 
         completeTask.addObject("z_contour", task.getListForZGraphic());
         completeTask.addObject("y_contour", task.getListForYGraphic());

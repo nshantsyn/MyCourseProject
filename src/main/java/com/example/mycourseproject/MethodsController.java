@@ -3,7 +3,8 @@ package com.example.mycourseproject;
 import com.example.mycourseproject.Jeeves.CompleteTask;
 import com.example.mycourseproject.Jeeves.CompleteTaskSimplex;
 import com.example.mycourseproject.Jeeves.Jivs;
-import com.example.mycourseproject.Simplex.SimplexMethod;
+import com.example.mycourseproject.Simplex.Simplex;
+
 import com.example.mycourseproject.additional.CompleteTaskCreator;
 import com.example.mycourseproject.additional.ModuleListWrapper;
 import com.example.mycourseproject.additional.Task;
@@ -36,7 +37,7 @@ public class MethodsController {
         System.out.println("Запуск метода Хука-Дживса...");
         CompleteTask completeTaskJivs =  Jivs.getResult(task);
         System.out.println("Запуск Симплекс-метода...");
-        CompleteTaskSimplex completeTaskSimplex = SimplexMethod.solveSimplexMethod(task);
+        CompleteTaskSimplex completeTaskSimplex = Simplex.getCompleteTask(task);
         System.out.println("Сохранение результатов...");
         session.setAttribute("task",task);
         session.setAttribute("jivs",completeTaskJivs);
